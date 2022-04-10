@@ -9,7 +9,7 @@
     
     <title>
         
-            链表倒置 |
+            经典进程同步——生产者消费者 |
         
         R
     </title>
@@ -180,7 +180,7 @@
     <div class="article-content-container">
 
         <div class="article-title">
-            <span class="title-hover-animation">链表倒置</span>
+            <span class="title-hover-animation">经典进程同步——生产者消费者</span>
         </div>
 
         
@@ -198,7 +198,7 @@
                     <div class="meta-info">
                         <div class="article-meta-info">
     <span class="article-date article-meta-item">
-        <i class="fas fa-edit"></i>&nbsp;2022-04-06 13:02:46
+        <i class="fas fa-edit"></i>&nbsp;2022-04-10 11:07:27
     </span>
     
     
@@ -207,11 +207,7 @@
             <ul>
                 
                     <li>
-                        <a href="/tags/DataStructure/">DataStructure</a>&nbsp;
-                    </li>
-                
-                    <li>
-                        | <a href="/tags/C/">C</a>&nbsp;
+                        <a href="/tags/C/">C</a>&nbsp;
                     </li>
                 
             </ul>
@@ -234,7 +230,21 @@
         
 
         <div class="article-content markdown-body">
-            <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdbool.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">LNode</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">int</span> data;</span><br><span class="line">    <span class="class"><span class="keyword">struct</span> <span class="title">LNode</span> *<span class="title">next</span>;</span>   </span><br><span class="line">&#125;LNode,* LinkList;</span><br><span class="line"><span class="comment">//初始化链表（带头结点）</span></span><br><span class="line"><span class="function">LinkList <span class="title">InitList</span><span class="params">()</span></span>&#123;</span><br><span class="line">    LinkList L=(LinkList)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LNode));</span><br><span class="line">    L-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">return</span> L;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//尾插操作 在p节点后插入数据为e的新节点</span></span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">InsertNextNode</span><span class="params">(LNode *p,<span class="keyword">int</span> e)</span></span>&#123;</span><br><span class="line">    LNode *s=(LNode *)<span class="built_in">malloc</span>(<span class="keyword">sizeof</span>(LNode));</span><br><span class="line">    <span class="keyword">if</span>(s==<span class="literal">NULL</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;<span class="comment">//申请新节点失败</span></span><br><span class="line">    s-&gt;data=e;</span><br><span class="line">    s-&gt;next=p-&gt;next;</span><br><span class="line">    p-&gt;next=s;</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//查找第i个节点(不算头结点)</span></span><br><span class="line"><span class="function">LNode * <span class="title">SearchNode</span><span class="params">(LinkList L,<span class="keyword">int</span> i)</span></span>&#123;</span><br><span class="line">    LNode *p=L;</span><br><span class="line">    <span class="keyword">int</span> j=<span class="number">0</span>;<span class="comment">//p指向第几个节点</span></span><br><span class="line">    <span class="keyword">while</span>(p!=<span class="literal">NULL</span>&amp;&amp;j&lt;i)&#123;</span><br><span class="line">        p=p-&gt;next;</span><br><span class="line">        j++;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(p==<span class="literal">NULL</span>)</span><br><span class="line">      <span class="keyword">return</span> <span class="literal">false</span>;<span class="comment">//查找失败</span></span><br><span class="line">    <span class="keyword">return</span> p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> len=<span class="number">0</span>,e;</span><br><span class="line">    LinkList L=InitList();</span><br><span class="line">    LNode *p=L,*s,*a=L;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;创建正序链表长度为:&quot;</span>);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;len);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=len;i++)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;请输入第%d个节点数据：&quot;</span>,i);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>,&amp;e);</span><br><span class="line">    InsertNextNode(p,e);</span><br><span class="line">    p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len<span class="number">-1</span>;i++)&#123;</span><br><span class="line">    s=SearchNode(L,len);</span><br><span class="line">    InsertNextNode(a,s-&gt;data);</span><br><span class="line">    a=a-&gt;next;</span><br><span class="line">    <span class="built_in">free</span>(s-&gt;next);</span><br><span class="line">    s-&gt;next=<span class="literal">NULL</span>;</span><br><span class="line">    &#125;<span class="comment">//倒置链表</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;倒序链表已生成\n&quot;</span>);</span><br><span class="line">    p=L-&gt;next;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;len;i++)&#123;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%d\t&quot;</span>,p-&gt;data);</span><br><span class="line">    p=p-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+            <h2 id="生产者消费者问题"><a href="#生产者消费者问题" class="headerlink" title="生产者消费者问题"></a>生产者消费者问题</h2><ol>
+<li><p>分配具有n个缓冲区的缓冲池，作为共享资源。</p>
+</li>
+<li><p>定义两个资源型信号量empty 和full，empty信号量表示当前空的缓冲区数量，full表示当前满的缓冲区数量。</p>
+</li>
+<li><p>定义互斥信号量mutex，当某个进程访问缓冲区之前先获取此信号量，在对缓冲区的操作完成后再释放此互斥信号量。以此实现多个进程对共享资源的互斥访问。</p>
+</li>
+<li><p>创建3个进程（或者线程）作为生产者，4个进程（或者线程）作为消费者。创建一个文件作为数据源，文件中事先写入一些内容作为内容。</p>
+</li>
+<li><p>编写代码实现生产者进程的工作内容，即从文件中读取数据，然后申请一个empty信号量，和互斥信号量，然后进入临界区操作将读取的数据放入此缓冲区中。并释放empty信号量和互斥信号量。</p>
+</li>
+<li><p>编写代码实现消费者者进程的工作内容，即先申请一个full信号量，和互斥信号量，然后进入临界区操作从缓冲区中读取数据并打印输出。</p>
+</li>
+</ol>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdio.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;semaphore.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;stdlib.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;pthread.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;unistd.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> n 8</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> in,out;</span><br><span class="line"><span class="keyword">int</span> buffer[n];</span><br><span class="line"><span class="keyword">sem_t</span> mutex,empty,full;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">produce</span><span class="params">(<span class="keyword">void</span>* arg)</span></span>&#123;</span><br><span class="line">     in=<span class="number">0</span>;</span><br><span class="line">     <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">      sleep(<span class="number">3</span>);</span><br><span class="line">      sem_wait(&amp;empty);</span><br><span class="line">      sem_wait(&amp;mutex);</span><br><span class="line">      <span class="keyword">int</span> data=rand()%<span class="number">100</span>;</span><br><span class="line">      buffer[in]=data;</span><br><span class="line">      in++;</span><br><span class="line">      in%=n;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;produced %d in position %d\n&quot;</span>,data,in);</span><br><span class="line">      sem_post(&amp;mutex);</span><br><span class="line">      sem_post(&amp;full);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> *<span class="title">consume</span><span class="params">(<span class="keyword">void</span>* arg)</span></span>&#123;</span><br><span class="line">     out=<span class="number">0</span>;</span><br><span class="line">     <span class="keyword">while</span>(<span class="number">1</span>)&#123;</span><br><span class="line">      sleep(<span class="number">3</span>);</span><br><span class="line">      sem_wait(&amp;full);</span><br><span class="line">      sem_wait(&amp;mutex);</span><br><span class="line">      <span class="keyword">int</span> data=buffer[out];</span><br><span class="line">      out++;</span><br><span class="line">      out%=n;</span><br><span class="line">      <span class="built_in">printf</span>(<span class="string">&quot;consumed %d in position %d\n&quot;</span>,data,out);</span><br><span class="line">      sem_post(&amp;mutex);</span><br><span class="line">      sem_post(&amp;empty);</span><br><span class="line"> &#125;</span><br><span class="line">&#125;  </span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">     sem_init(&amp;mutex,<span class="number">0</span>,<span class="number">1</span>);<span class="comment">//mutex初始化为1或者直接使用pthread_mutex</span></span><br><span class="line">     sem_init(&amp;empty,<span class="number">0</span>,n);</span><br><span class="line">     sem_init(&amp;full,<span class="number">0</span>,<span class="number">0</span>);</span><br><span class="line">    </span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;n;i++)&#123;</span><br><span class="line">     buffer[i]=<span class="number">0</span>;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">pthread_t</span> producer[<span class="number">3</span>];<span class="comment">//3个生产者线程</span></span><br><span class="line">     <span class="keyword">pthread_t</span> consumer[<span class="number">4</span>];<span class="comment">//4个消费者线程</span></span><br><span class="line">     <span class="comment">//创建线程</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)&#123;</span><br><span class="line">       pthread_create(&amp;producer[i],<span class="literal">NULL</span>,produce,<span class="literal">NULL</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">       pthread_create(&amp;consumer[i],<span class="literal">NULL</span>,consume,<span class="literal">NULL</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//等待线程</span></span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">3</span>;i++)&#123;</span><br><span class="line">       pthread_join(producer[i],<span class="literal">NULL</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;<span class="number">4</span>;i++)&#123;</span><br><span class="line">       pthread_join(consumer[i],<span class="literal">NULL</span>);</span><br><span class="line">     &#125;</span><br><span class="line">     <span class="comment">//销毁信号量</span></span><br><span class="line">     sem_destroy(&amp;mutex);</span><br><span class="line">     sem_destroy(&amp;empty);</span><br><span class="line">     sem_destroy(&amp;full);</span><br><span class="line"></span><br><span class="line">     <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 
         </div>
@@ -243,11 +253,11 @@
             <div class="post-copyright-info">
                 <div class="article-copyright-info-container">
     <ul>
-        <li>Post title：链表倒置</li>
+        <li>Post title：经典进程同步——生产者消费者</li>
         <li>Post author：Moriarty</li>
-        <li>Create time：2022-04-06 13:02:46</li>
+        <li>Create time：2022-04-10 11:07:27</li>
         <li>
-            Post link：https://rieminn.github.io/2022/04/06/链表倒置/
+            Post link：https://rieminn.github.io/2022/04/10/生产者消费者问题/
         </li>
         <li>
             Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
@@ -261,29 +271,14 @@
         
             <div class="article-nav">
                 
-                    <div class="article-prev">
-                        <a class="prev"
-                           rel="prev"
-                           href="/2022/04/10/%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98/"
-                        >
-                            <span class="left arrow-icon flex-center">
-                              <i class="fas fa-chevron-left"></i>
-                            </span>
-                            <span class="title flex-center">
-                                <span class="post-nav-title-item">经典进程同步——生产者消费者</span>
-                                <span class="post-nav-item">Prev posts</span>
-                            </span>
-                        </a>
-                    </div>
-                
                 
                     <div class="article-next">
                         <a class="next"
                            rel="next"
-                           href="/2022/04/05/%E5%B7%AB%E5%B8%88%E4%B8%89%E6%8E%A7%E5%88%B6%E5%8F%B0%E5%91%BD%E4%BB%A4/"
+                           href="/2022/04/06/%E9%93%BE%E8%A1%A8%E5%80%92%E7%BD%AE/"
                         >
                             <span class="title flex-center">
-                                <span class="post-nav-title-item">巫师三控制台命令</span>
+                                <span class="post-nav-title-item">链表倒置</span>
                                 <span class="post-nav-item">Next posts</span>
                             </span>
                             <span class="right arrow-icon flex-center">
@@ -490,7 +485,7 @@
         <aside class="page-aside">
             <div class="post-toc-wrap">
     <div class="post-toc">
-        
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%94%9F%E4%BA%A7%E8%80%85%E6%B6%88%E8%B4%B9%E8%80%85%E9%97%AE%E9%A2%98"><span class="nav-text">生产者消费者问题</span></a></li></ol>
     </div>
 </div>
         </aside>
